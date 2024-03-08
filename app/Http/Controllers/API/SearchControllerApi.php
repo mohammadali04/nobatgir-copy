@@ -52,4 +52,52 @@ class SearchControllerApi extends BaseController
            }
            return [$days,$friday];
        }
+       public function showNextWeek(Request $request){
+        // dd('hello');
+        $service_id=$request->service_id;
+        $endTime=$request->endTime;
+        $date=parent::exploadDateFormat($endTime);
+        $date=(new Jalalian($date[0],$date[1],$date[2]));
+        $this_week_days=$this->getNextWeek($service_id,$date,$endTime);
+        $days=$this_week_days[0];
+        $friday=$this_week_days[1]->format('Y/m/d');
+        $sunday=$date->addDays(1)->format('Y/m/d');
+        $sizeOfDays=count($days);
+        return response()->json([$days,$friday,$sunday,$sizeOfDays],200);
+        // if(count($days)==0){
+        //     return response()->json(0,200);
+        // }else{
+        //     return response()->json([$days,$friday,$sunday],200);
+        // }
+        // return $days;
+        // if(count(array_keys($days))==1 && key($days)=='no day1'){
+        //     return response()->json(0,200);
+
+        // }else{
+        //     return response()->json($days,200);
+        // }
+        
+         
+        }
+        public function getNextWeek($service_id,$currentTime,$currentTimeFormat){
+            $date=parent::exploadDateFormat($currentTimeFormat);
+            $endTime=(new Jalalian($date[0],$date[1],$date[2]))->addDays(7);
+            $days=[];
+            $day_number=0;
+            $sizeOfDays=0;
+            while($currentTime < $endTime){//باید با حلقه ی while چک شود
+                $currentTime=$currentTime->addDays(1);       
+                $dateTime=$currentTime->format('Y/m/d');
+                $turn=$this->getTurn($service_id,$dateTime);
+                if(count($turn)==0){
+                    $dayName=$this->getDayName($day_number+1);
+                    $days[$dayName->day]=[]; 
+                }else{
+                    $dayName=$this->getDayName($turn[0]->day_id);
+                    $days[$dayName->day]=$turn;   
+                    $day_number=$turn[0]->day_id;           
+                }
+            }
+                return [$days,$endTime];
+            }
 }
