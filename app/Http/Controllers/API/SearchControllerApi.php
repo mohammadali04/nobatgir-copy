@@ -79,6 +79,23 @@ class SearchControllerApi extends BaseController
         
          
         }
+        public function showPreviouseWeek(Request $request){
+            $service_id=$request->service_id;
+            $startTime=$request->startTime;
+            $date=parent::exploadDateFormat($startTime);
+            $date=(new Jalalian($date[0],$date[1],$date[2]));
+             $days_of_week=$this->getPreviouseWeek($service_id,$date,$startTime);
+                $days=$days_of_week[0];
+                $sunday=$days_of_week[1]->format('Y/m/d');
+                $stop=$days_of_week[2];
+                $friday=$date->subDays(1)->format('Y/m/d');
+                $days=array_reverse($days);
+                return response()->json([$days,$friday,$sunday,$stop],200);
+         
+               
+                
+               
+        }
         public function getNextWeek($service_id,$currentTime,$currentTimeFormat){
             $date=parent::exploadDateFormat($currentTimeFormat);
             $endTime=(new Jalalian($date[0],$date[1],$date[2]))->addDays(7);
@@ -100,4 +117,32 @@ class SearchControllerApi extends BaseController
             }
                 return [$days,$endTime];
             }
+            public function getPreviouseWeek($service_id,$currentTime,$currentTimeFormat){
+                $date=parent::exploadDateFormat($currentTimeFormat);
+                $startTime=(new Jalalian($date[0],$date[1],$date[2]))->subDays(7);
+                $days=[];
+                $day_number=0;
+                $stop='';
+                while($startTime < $currentTime){//باید با حلقه ی while چک شود
+                    $currentTime=$currentTime->subDays(1);
+                    if($currentTime<(Jalalian::forge('today'))){
+                        $startTime=$currentTime->addDays(1);
+                        $stop='stop';
+                        break;
+                    }       
+                    $dateTime=$currentTime->format('Y/m/d');
+                    $turn=$this->getTurn($service_id,$dateTime);
+                   
+                    if(count($turn)==0){
+                        $dayName=$this->getDayName($day_number-1);
+                    $days[$dayName->day]=[]; 
+                    }else{
+                        $dayName=$this->getDayName($turn[0]->day_id);
+                    $days[$dayName->day]=$turn;   
+                    $day_number=$turn[0]->day_id;         
+                    }    
+                }
+
+                    return [$days,$startTime,$stop];
+                }
 }
