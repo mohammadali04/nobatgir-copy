@@ -64,18 +64,7 @@ class SearchControllerApi extends BaseController
         $sunday=$date->addDays(1)->format('Y/m/d');
         $sizeOfDays=count($days);
         return response()->json([$days,$friday,$sunday,$sizeOfDays],200);
-        // if(count($days)==0){
-        //     return response()->json(0,200);
-        // }else{
-        //     return response()->json([$days,$friday,$sunday],200);
-        // }
-        // return $days;
-        // if(count(array_keys($days))==1 && key($days)=='no day1'){
-        //     return response()->json(0,200);
-
-        // }else{
-        //     return response()->json($days,200);
-        // }
+        
         
          
         }
