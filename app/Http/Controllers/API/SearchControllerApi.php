@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ServiceDetailResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Service;
@@ -30,7 +31,7 @@ class SearchControllerApi extends BaseController
         $friday=$this_week_days[1];
         $friday=$friday->format('Y/m/d');
         $address=$service->address()->first();
-        return view('front3.search.service-detail',compact('days','service','address','allCategories','galleryImages','comments','friday','today'));
+        return response()->json(new ServiceDetailResource($days,$service,$address,$allCategories,$galleryImages,$comments,$friday,$today));
         
     }
     public function getThistWeek($service_id,$currentTime){
