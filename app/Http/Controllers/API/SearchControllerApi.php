@@ -53,4 +53,8 @@ class SearchControllerApi extends BaseController
            }
            return [$days,$friday];
        }
+       public function getTurn($service_id,$dateTime){
+           $turn=Turn::where('date','=',$dateTime)->where('service_id','=',$service_id)->get(); 
+           return $turn;
+       }
 }
