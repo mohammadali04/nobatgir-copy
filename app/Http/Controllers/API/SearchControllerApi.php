@@ -73,7 +73,8 @@ class SearchControllerApi extends BaseController
        $date=parent::getDateTimeJalali($turnDetail->date);
         $user=User::where('id',$turnDetail->user_id)->first();
         $service=Service::where('id',$turn->service_id)->first();
-         return view('front3.search.turn-detail',compact('turnDetail','user','service','date'));
-         return $this->sendResponse(bookTurnResource::toArray($turnDetail,$user,$date,$service))
+      
+         return $this->sendResponse(bookTurnResource::toArray($turnDetail,$user,$date,$service));
+
      }
 }
