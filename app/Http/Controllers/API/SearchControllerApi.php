@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Service;
 use App\Http\Resources\ServiceResource;
+use BaseController;
 
 class SearchControllerApi extends BaseController
 {
@@ -29,8 +30,8 @@ class SearchControllerApi extends BaseController
         $friday=$this_week_days[1];
         $friday=$friday->format('Y/m/d');
         $address=$service->address()->first();
-        return view('front3.search.service-detail',compact('days','service','address','allCategories','galleryImages','comments','friday','today'));
-        
+        // return view('front3.search.service-detail',compact('days','service','address','allCategories','galleryImages','comments','friday','today'));
+      return this->sendResponse();
     }
     public function getThistWeek($service_id,$currentTime){
         $days=[];
