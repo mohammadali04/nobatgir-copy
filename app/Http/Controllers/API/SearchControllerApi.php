@@ -65,4 +65,14 @@ class SearchControllerApi extends BaseController
         $turns=Turn::where('date',$date)->first();
         return $turns;
     }
+    public function bookTurn(Request $request,Turn $turn,$id){
+        $turn->user_id=$id;
+        $turn->active=1;
+        $turn->save();
+       $turnDetail = $turnDetail=Turn::where('id',$turn->id)->first();
+       $date=parent::getDateTimeJalali($turnDetail->date);
+        $user=User::where('id',$turnDetail->user_id)->first();
+        $service=Service::where('id',$turn->service_id)->first();
+         return view('front3.search.turn-detail',compact('turnDetail','user','service','date'));
+     }
 }
