@@ -75,4 +75,9 @@ class SearchControllerApi extends BaseController
         $service=Service::where('id',$turn->service_id)->first();
          return view('front3.search.turn-detail',compact('turnDetail','user','service','date'));
      }
+     public function addToFavorits(Request $request){
+        $favorite=new Favorite();
+        $favorite=$favorite->create($request->all());
+        return response()->json($favorite->id,200);
+    }
 }
