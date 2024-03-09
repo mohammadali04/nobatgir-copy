@@ -80,4 +80,19 @@ class SearchControllerApi extends BaseController
         $favorite=$favorite->create($request->all());
         return response()->json($favorite->id,200);
     }
+    public function addComment(Request $request){
+
+        $user_id=Auth::user()->id;
+        $name=Auth::user()->name;
+        $email=Auth::user()->email;
+        try{
+           $comment = Comment::create(['service_id'=>$request->service_id,'user_id'=>$user_id,'name'=>$name,'email'=>$email,'body'=>$request->body]);
+            Score::create(['comment_id'=>$comment->id,'score'=>$request->score]);
+        }catch(Exception $e){
+            dd($e->getMessage());
+            return redirect()->back()->with('warning',$e->getMessage());
+        }
+        $msg='نظر شما با موفقیت ثبت شد و پس از بررسی یه نمایش در خواهد آمد';
+        return redirect()->back()->with('success',$msg);
+            }
 }
