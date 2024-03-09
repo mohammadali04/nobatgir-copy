@@ -93,6 +93,6 @@ class SearchControllerApi extends BaseController
             return redirect()->back()->with('warning',$e->getMessage());
         }
         $msg='نظر شما با موفقیت ثبت شد و پس از بررسی یه نمایش در خواهد آمد';
-        return redirect()->back()->with('success',$msg);
+        return response()->json($msg);
             }
 }
