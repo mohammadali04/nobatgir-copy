@@ -57,4 +57,7 @@ class SearchControllerApi extends BaseController
            $turn=Turn::where('date','=',$dateTime)->where('service_id','=',$service_id)->get(); 
            return $turn;
        }
+       public function getDayName($dayId){
+        return Day::where('id',$dayId)->first();
+    }
 }
