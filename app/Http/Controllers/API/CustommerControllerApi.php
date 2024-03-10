@@ -18,4 +18,19 @@ class CustommerControllerApi extends BaseController
         return $this->sendResponse($turn,'this is your turn data');
     //not diterminate yet;
         }
+        public function getMyFavoritServices($service_ids){
+            $services=[];
+            foreach($service_ids as $service_id){
+                $service=Service::where('id',$service_id)->first();
+                array_push($services,$service);
+            }
+            return $services;
+        }
+        public function showMyFavorits(){
+            // $userId=Auth::user()->id;
+            $myFavorites=Auth::user()->services()->get();
+            // $favoritIds=Favorite::where('user_id',$userId)->pluck('service_id');
+            // $myFavorits=$this->getMyFavoritServices($favoritIds);
+            return $this->sendResponse($myFavorites,'your favorits');
+        }
 }
