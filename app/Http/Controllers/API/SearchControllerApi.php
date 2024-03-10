@@ -3,10 +3,24 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ServiceDetailResource;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use App\Models\Gallery;
+use App\Models\Gallerycategory;
+use Exception;
+use App\Models\Day;
+use App\Models\Favorite;
 use App\Models\Service;
+use App\Models\Comment;
+use App\Models\Score;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use App\Models\Turn;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Mockery\Undefined;
+use Morilog\Jalali\Jalalian;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\ServiceDetailResource;
 use App\Http\Resources\ServiceResource;
 use App\Http\Controllers\API\BaseController;
 
