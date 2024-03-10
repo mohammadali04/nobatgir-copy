@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\bookTurnResource;
 use App\Models\Gallery;
 use App\Models\Gallerycategory;
 use Exception;
@@ -30,7 +31,7 @@ class SearchControllerApi extends BaseController
         $services=Service::all();
         return $this->sendResponse(ServiceResource::collection($services),'services');
     }
-    public function showServiceDetail(Service $service){
+    public function showServiceDetail(Service $service):JsonResponse{
         $x=Gallery::where('service_id',$service->id)->get();
         // dd($x->unique('category_id')->pluck('category_id'));
         // echo Jalalian::forge('today');
@@ -80,7 +81,8 @@ class SearchControllerApi extends BaseController
         $turns=Turn::where('date',$date)->first();
         return $turns;
     }
-    public function bookTurn(Request $request,Turn $turn,$id){
+    public function bookTurn(Request $request,Turn $turn,$id):JsonResponse{
+        $data=[];
         $turn->user_id=$id;
         $turn->active=1;
         $turn->save();
@@ -89,7 +91,7 @@ class SearchControllerApi extends BaseController
         $user=User::where('id',$turnDetail->user_id)->first();
         $service=Service::where('id',$turn->service_id)->first();
       
-         return $this->sendResponse(bookTurnResource::toArray($turnDetail,$user,$date,$service));
+         return $this->sendResponse(new bookTurnResource([$turnDetail,$user,$date,$service]),'your data');
 
      }
      public function addToFavorits(Request $request){
