@@ -33,4 +33,8 @@ class CustommerControllerApi extends BaseController
             // $myFavorits=$this->getMyFavoritServices($favoritIds);
             return $this->sendResponse($myFavorites,'your favorits');
         }
+        public function discardFavorite($service){
+            Favorite::where('service_id',$service)->delete();      
+            return redirect()->back();  
+        }
 }
